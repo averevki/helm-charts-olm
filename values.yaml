@@ -57,6 +57,13 @@ kuadrant:
   wasmPluginImage: ""
   protectedRegistry: ""
 
+  # (optional)
+  # Extensions image to patch into the operator CSV as an initContainer.
+  # The initContainer copies extension binaries from /extensions/ to a shared volume
+  # mounted at /extensions in the manager container.
+  # Example: quay.io/kuadrant/internal-extensions:latest
+  extensionsImage: ""
+
   # Enable observability (debug logging, tracing, monitoring) for Kuadrant and its components
   # When enabled, this will:
   # - Set LOG_LEVEL=debug for Kuadrant operator
@@ -78,7 +85,7 @@ istio:
   # 'ossm3' for Openshift Service mesh v3 (recommended for every Openshift versions)
   # 'ocp' for installing Istio managed by Gateway API (not recommended: mTLS is not supported)
   # if left empty no Gateway API implementation is installed
-  istioProvider: ossm3
+  istioProvider: ocp
   ossm3:  # Openshift Service Mesh, but version 3
     version: v1.28-latest
     operator:
