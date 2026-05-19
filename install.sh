@@ -13,6 +13,7 @@ for arg in "$@"; do
             additional_flags+=" --values additionalManifests.yaml --set tools.enabled=true"
             ;;
         -e)
+            echo "Including extensions manifests"
             additional_flags+=" --values extensionsManifests.yaml"
             ;;
     esac
