@@ -57,6 +57,13 @@ kuadrant:
   wasmPluginImage: ""
   protectedRegistry: ""
 
+  # (optional)
+  # Extensions image to patch into the operator CSV as an initContainer.
+  # The initContainer copies extension binaries from /extensions/ to a shared volume
+  # mounted at /extensions in the manager container.
+  # Example: quay.io/kuadrant/internal-extensions:latest
+  extensionsImage: "quay.io/kuadrant/internal-extensions:latest"
+
   # Enable observability (debug logging, tracing, monitoring) for Kuadrant and its components
   # When enabled, this will:
   # - Set LOG_LEVEL=debug for Kuadrant operator

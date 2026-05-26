@@ -1,0 +1,6 @@
+{{- if .Values.kuadrant.extensionsImage }}
+{{- range .Values.extensionsManifests }}
+---
+{{ tpl (. | toYaml) $ }}
+{{- end }}
+{{- end }}

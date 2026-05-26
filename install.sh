@@ -7,9 +7,17 @@ cd "$(dirname "$0")"
 
 additional_flags=''
 
-if [[ "$1" == "-t" ]]; then
-    additional_flags+=" --values additionalManifests.yaml --set tools.enabled=true"
-fi
+for arg in "$@"; do
+    case "$arg" in
+        -t)
+            additional_flags+=" --values additionalManifests.yaml --set tools.enabled=true"
+            ;;
+        -e)
+            echo "Including extensions manifests"
+            additional_flags+=" --values extensionsManifests.yaml"
+            ;;
+    esac
+done
 
 if [[ "$INSTALL_RHCL_GA" == "true" ]]; then
     additional_flags+=" --set kuadrant.indexImage='' --set kuadrant.operatorName=rhcl-operator --set kuadrant.channel=stable"
@@ -23,7 +31,7 @@ echo "--Installing instances---"
 helm_cmd="helm install $additional_flags --wait kuadrant-instances charts/kuadrant-instances"
 eval "$helm_cmd"
 
-if [[ "$1" == "-t" ]]; then
+if [[ " $* " == *" -t "* ]]; then
 echo "--Installing tools operators"
 helm install --wait tools-operators charts/tools-operators
 
