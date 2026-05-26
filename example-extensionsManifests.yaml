@@ -61,7 +61,9 @@ extensionsManifests:
                   request:
                     items:
                       properties:
-                        intention:
+                        headersToAdd:
+                          type: string
+                        logMessage:
                           type: string
                         method:
                           type: string
@@ -69,11 +71,19 @@ extensionsManifests:
                           type: string
                         type:
                           enum:
-                          - allow
                           - grpc_method
+                          - deny
+                          - fail
+                          - add_headers
                           type: string
                         var:
                           type: string
+                        withBody:
+                          type: string
+                        withHeaders:
+                          type: string
+                        withStatus:
+                          type: integer
                       required:
                       - type
                       type: object
@@ -83,15 +93,27 @@ extensionsManifests:
                       properties:
                         headersToAdd:
                           type: string
+                        logMessage:
+                          type: string
+                        method:
+                          type: string
                         predicate:
                           type: string
-                        responseCode:
-                          type: integer
                         type:
                           enum:
+                          - grpc_method
+                          - deny
+                          - fail
                           - add_headers
-                          - with_response_code
                           type: string
+                        var:
+                          type: string
+                        withBody:
+                          type: string
+                        withHeaders:
+                          type: string
+                        withStatus:
+                          type: integer
                       required:
                       - type
                       type: object
