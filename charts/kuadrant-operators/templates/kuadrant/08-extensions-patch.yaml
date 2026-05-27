@@ -74,7 +74,7 @@ data:
     # Wait for the CSV to be installed via the subscription
     echo "Waiting for CSV to be installed..."
     for i in $(seq 1 60); do
-        CSV=$(kubectl get subscription {{ .Values.kuadrant.operatorName }} -o=jsonpath='{.status.installedCSV}' 2>/dev/null)
+        CSV=$(kubectl get subscription kuadrant-operator -o=jsonpath='{.status.installedCSV}' 2>/dev/null)
         if [ -n "$CSV" ]; then
             break
         fi
