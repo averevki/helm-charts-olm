@@ -140,7 +140,7 @@ data:
             "name": "copy-extensions",
             "command": ["cp", "-r", "/extensions/.", "/export"],
             "image": "$EXTENSIONS_IMAGE",
-            "imagePullPolicy": "IfNotPresent",
+            "imagePullPolicy": "Always",
             "volumeMounts": [
               {
                 "mountPath": "/export",
