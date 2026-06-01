@@ -39,6 +39,9 @@ spec:
             port: 4317
             service: jaeger-collector.tools.svc.cluster.local
 {{ end }}
+    global:
+      proxy:
+        componentLogLevel: "wasm:debug"
     pilot:
       autoscaleMin: 2
   version: {{ .Values.istio.ossm3.version }}
