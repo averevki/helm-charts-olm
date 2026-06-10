@@ -4,8 +4,8 @@ kind: Kuadrant
 metadata:
   name: kuadrant-sample
   namespace: {{ .Values.kuadrant.namespace }}
-{{ if eq .Values.kuadrant.enableObservability true }}
 spec:
+{{ if eq .Values.kuadrant.enableObservability true }}
   observability:
     dataPlane:
       defaultLevels:
@@ -15,7 +15,15 @@ spec:
     tracing:
       defaultEndpoint: 'rpc://jaeger-collector.tools.svc.cluster.local:4317'
       insecure: true
-{{ else }}
-spec: {}
+{{ end }}
+{{- $clusterVersion := (lookup "config.openshift.io/v1" "ClusterVersion" "" "version") -}}
+{{- $ocpVersionOk := false -}}
+{{- if $clusterVersion -}}
+  {{- $ocpVersionOk = semverCompare ">=4.20.0-0" $clusterVersion.status.desired.version -}}
+{{- end -}}
+{{ if and .Values.kuadrant.developerPortal (eq .Values.kuadrant.developerPortal.enabled true) $ocpVersionOk }}
+  components:
+    developerPortal:
+      enabled: true
 {{ end }}
 {{ end }}
