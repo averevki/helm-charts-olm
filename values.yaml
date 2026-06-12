@@ -73,6 +73,12 @@ kuadrant:
   # - Enable observability features
   enableObservability: true
 
+  # Enable the developer portal component
+  # When enabled, activates the developer portal controller for APIProduct and APIKeyRequest resources
+  # Note: Requires OpenShift 4.20+
+  developerPortal:
+    enabled: true
+
 # Installs Gateway API CRD's on cluster. Not needed for Openshift 4.19+
 gatewayAPI:
   version: v1.5.0  # v1.3.0, v1.4.0, v1.5.0 available; leave empty for installing on Openshift 4.19+
