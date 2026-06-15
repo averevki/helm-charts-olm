@@ -12,7 +12,7 @@ tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 
 # Filter only relevant channels and bundles from the catalog.
-opm render "$CATALOG_IMAGE" 2>/dev/null | jq -c '
+opm render "$CATALOG_IMAGE" | jq -c '
   select(
     (.schema == "olm.channel" and (
       (.package == "openshift-cert-manager-operator" and .name == "stable-v1") or
@@ -21,12 +21,7 @@ opm render "$CATALOG_IMAGE" 2>/dev/null | jq -c '
     )) or
     (.schema == "olm.bundle" and .package == "servicemeshoperator3")
   )
-' > "$tmpdir/catalog.jsonl"
-
-if [[ ! -s "$tmpdir/catalog.jsonl" ]]; then
-    echo "ERROR: Failed to render or filter catalog ${CATALOG_IMAGE}" >&2
-    exit 1
-fi
+' > "$tmpdir/catalog.jsonl" || { echo "ERROR: Failed to render or filter catalog ${CATALOG_IMAGE}" >&2; exit 1; }
 
 # Sort and select latest versions of operators and their dependencies from the catalog outputting as JSON object.
 # Specific channels are used for each operator
