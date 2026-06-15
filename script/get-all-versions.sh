@@ -15,8 +15,8 @@ PID_IMAGES="$!"
 "${SCRIPT_DIR}/get-operator-versions.sh" > "$tmpdir/operators.yaml" &
 PID_OPERATORS="$!"
 
-wait "$PID_IMAGES" || { echo "ERROR: Images versions script failed" && exit 1; }
-wait "$PID_OPERATORS" || { echo "ERROR: Operator versions script failed" && exit 1; }
+wait "$PID_IMAGES" || { echo "ERROR: Images versions script failed" >&2 && exit 1; }
+wait "$PID_OPERATORS" || { echo "ERROR: Operator versions script failed" >&2 && exit 1; }
 
 # Merge and output YAML
 yq eval-all '. as $item ireduce ({}; . * $item)' "$tmpdir/tags.yaml" "$tmpdir/operators.yaml"

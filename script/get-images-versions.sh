@@ -26,7 +26,7 @@ get_token() {
             ;;
     esac
 
-    token_response=$(curl -s "$auth_url")
+    token_response=$(curl -sf "$auth_url")
     echo "$token_response" | jq -r '.token // .access_token // empty'
 }
 
@@ -51,9 +51,9 @@ fetch_all_tags() {
 
     while [[ -n "$url" ]]; do
         if [[ -n "$token" ]]; then
-            response=$(curl -sS -D - -H "Authorization: Bearer $token" "$url")
+            response=$(curl -sSf -D - -H "Authorization: Bearer $token" "$url")
         else
-            response=$(curl -sS -D - "$url")
+            response=$(curl -sSf -D - "$url")
         fi
 
         headers=$(echo "$response" | sed '/^\r$/q')
@@ -62,7 +62,7 @@ fetch_all_tags() {
         tags=$(echo "$body" | jq -r '.tags[]' 2>/dev/null || true)
         all_tags="${all_tags}"$'\n'"${tags}"
 
-        next_link=$(echo "$headers" | grep -i '^link:' | sed 's/.*<\([^>]*\)>; rel="next".*/\1/' || true)
+        next_link=$(echo "$headers" | grep -i '^link:' | grep -oP '(?<=<)[^>]+(?=>; rel="next")' || true)
         if [[ -n "$next_link" ]]; then
             if [[ "$next_link" =~ ^https?:// ]]; then
                 url="$next_link"
