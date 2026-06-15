@@ -62,7 +62,7 @@ fetch_all_tags() {
         tags=$(echo "$body" | jq -r '.tags[]' 2>/dev/null || true)
         all_tags="${all_tags}"$'\n'"${tags}"
 
-        next_link=$(echo "$headers" | grep -i '^link:' | grep -oP '(?<=<)[^>]+(?=>; rel="next")' || true)
+        next_link=$(echo "$headers" | grep -i '^link:' | sed 's/.*<\([^>]*\)>; rel="next".*/\1/' || true)
         if [[ -n "$next_link" ]]; then
             if [[ "$next_link" =~ ^https?:// ]]; then
                 url="$next_link"
