@@ -26,7 +26,7 @@ get_token() {
             ;;
     esac
 
-    token_response=$(curl -sf "$auth_url")
+    token_response=$(curl -sf --connect-timeout 10 --max-time 30 "$auth_url")
     echo "$token_response" | jq -r '.token // .access_token // empty'
 }
 
@@ -51,9 +51,9 @@ fetch_all_tags() {
 
     while [[ -n "$url" ]]; do
         if [[ -n "$token" ]]; then
-            response=$(curl -sSf -D - -H "Authorization: Bearer $token" "$url")
+            response=$(curl -sSf --connect-timeout 10 --max-time 30 -D - -H "Authorization: Bearer $token" "$url")
         else
-            response=$(curl -sSf -D - "$url")
+            response=$(curl -sSf --connect-timeout 10 --max-time 30 -D - "$url")
         fi
 
         headers=$(echo "$response" | sed '/^\r$/q')
