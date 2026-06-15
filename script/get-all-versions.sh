@@ -19,4 +19,5 @@ wait "$PID_IMAGES" || { echo "ERROR: Images versions script failed" >&2 && exit 
 wait "$PID_OPERATORS" || { echo "ERROR: Operator versions script failed" >&2 && exit 1; }
 
 # Merge and output YAML
+echo "# Generated on: $(date -R)"
 yq eval-all '. as $item ireduce ({}; . * $item)' "$tmpdir/tags.yaml" "$tmpdir/operators.yaml"
