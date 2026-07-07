@@ -103,6 +103,8 @@ get_latest_tag() {
     echo "$latest"
 }
 
+command -v jq || { echo "'jq' is required for running this script."; exit 1; }
+
 # Fetch all tags in parallel
 tmpdir=$(mktemp -d)
 trap "rm -rf $tmpdir" EXIT

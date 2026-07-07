@@ -6,6 +6,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+command -v jq || { echo "'jq' is required for running this script."; exit 1; }
+command -v opm || { echo "'opm' is required for running this script."; exit 1; }
+
 tmpdir=$(mktemp -d)
 trap "rm -rf $tmpdir" EXIT
 
