@@ -28,9 +28,6 @@ tools:
   valkey:
     enable: true
     image: ghcr.io/valkey-io/valkey:latest
-  customMetricsApiserver:
-    enable: true
-    image: quay.io/acristur/custom-metrics-apiserver:latest
   vault:
     enable: true
   coredns:
