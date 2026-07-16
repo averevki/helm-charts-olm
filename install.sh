@@ -25,7 +25,12 @@ if [[ "$INSTALL_RHCL_GA" == "true" ]]; then
 fi
 
 if [[ "$FREEZE_VERSIONS" == "true" ]]; then
-    script/get-all-versions.sh > "values-versions.yaml" || exit 1
+    if ! [[ -e "values-versions.yaml" ]]; then
+    	script/get-all-versions.sh > "values-versions.yaml" || exit 1;
+    else
+	echo -n "Using privously frozen versions ";
+	head -1 "values-versions.yaml";
+    fi
     additional_flags+=" --values values-versions.yaml"
     tools_additional_flags+=" --values values-versions.yaml"
 fi
