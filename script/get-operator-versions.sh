@@ -8,8 +8,8 @@ set -euo pipefail
 
 CATALOG_IMAGE="${CATALOG_IMAGE:-registry.redhat.io/redhat/redhat-operator-index:v4.22}"
 
-command -v jq || { echo "'jq' is required for running this script."; exit 1; }
-command -v opm || { echo "'opm' is required for running this script."; exit 1; }
+command -v jq > /dev/null || { echo "'jq' is required for running this script."; exit 1; }
+command -v opm > /dev/null || { echo "'opm' is required for running this script."; exit 1; }
 
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
