@@ -8,28 +8,6 @@ spec:
   values:
 {{ if eq .Values.kuadrant.enableObservability true }}
     meshConfig:
-      accessLogFile: /dev/stdout
-      accessLogEncoding: JSON
-      accessLogFormat: |
-        {
-          "start_time": "%START_TIME%",
-          "method": "%REQ(:METHOD)%",
-          "path": "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%",
-          "protocol": "%PROTOCOL%",
-          "response_code": "%RESPONSE_CODE%",
-          "response_flags": "%RESPONSE_FLAGS%",
-          "bytes_received": "%BYTES_RECEIVED%",
-          "bytes_sent": "%BYTES_SENT%",
-          "duration": "%DURATION%",
-          "upstream_service_time": "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%",
-          "x_forwarded_for": "%REQ(X-FORWARDED-FOR)%",
-          "user_agent": "%REQ(USER-AGENT)%",
-          "request_id": "%REQ(X-REQUEST-ID)%",
-          "authority": "%REQ(:AUTHORITY)%",
-          "upstream_host": "%UPSTREAM_HOST%",
-          "upstream_cluster": "%UPSTREAM_CLUSTER%",
-          "route_name": "%ROUTE_NAME%"
-        }
       defaultConfig:
         tracing: { }
       enableTracing: true
@@ -38,6 +16,28 @@ spec:
           opentelemetry:
             port: 4317
             service: jaeger-collector.tools.svc.cluster.local
+        - name: json-access-log
+          envoyFileAccessLog:
+            logFormat:
+              labels:
+                method: "%REQ(:METHOD)%"
+                route_name: "%ROUTE_NAME%"
+                authority: "%REQ(:AUTHORITY)%"
+                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                x_forwarded_for: "%REQ(X-FORWARDED-FOR)%"
+                response_flags: "%RESPONSE_FLAGS%"
+                start_time: "%START_TIME%"
+                request_id: "%REQ(X-REQUEST-ID)%"
+                response_code: "%RESPONSE_CODE%"
+                upstream_host: "%UPSTREAM_HOST%"
+                bytes_sent: "%BYTES_SENT%"
+                user_agent: "%REQ(USER-AGENT)%"
+                duration: "%DURATION%"
+                bytes_received: "%BYTES_RECEIVED%"
+                upstream_cluster: "%UPSTREAM_CLUSTER%"
+                protocol: "%PROTOCOL%"
+                upstream_service_time: "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%"
+            path: /dev/stdout
 {{ end }}
     global:
       proxy:
