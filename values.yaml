@@ -93,7 +93,7 @@ istio:
   # if left empty no Gateway API implementation is installed
   istioProvider: ossm3
   ossm3:  # Openshift Service Mesh, but version 3
-    version: v1.30-latest
+    version: v1.28-latest
     operator:
       channel: stable
       startingCSV: servicemeshoperator3.v3.4.0  # Ignored if 'Automatic' bellow
